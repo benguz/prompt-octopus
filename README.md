@@ -1,11 +1,9 @@
-# prompt-octopus
-Run side-by-side prompt engineering and compare as many prompt responses as you need!
+# Prompt Octopus 🐙
+Run side-by-side prompt engineering and compare as many prompt responses as you need! Try it online at [https://promptoctopus.com](https://promptoctopus.com) or self-host.
 
 ## Self-Hosting
-
+You'll need an OpenAI API key.
 ### Python
-Get an API key and set acceptable origins, or run locally.
-
 Move /assets into /python_selfhost/static
 
 Working in /python_selfhost, run Python (ex. with Windows):
@@ -18,7 +16,6 @@ Next:
 ```
 pip install -r requirements.txt
 set FLASK_APP=python_backend.py
-
 ```
 (use "export" instead of "set" on mac)
 
@@ -26,14 +23,12 @@ set FLASK_APP=python_backend.py
 flask run
 ```
 
-### node
-In the nodejs_selfhost folder run:
+### Node.js
+In the /nodejs_selfhost folder run:
 ```
 npm init -y
 npm install express cors dotenv openai@^4.0.0
 ```
-
-(optional: set CORS origins)
 
 add .env file to project directory and write 
 ```
