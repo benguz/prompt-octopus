@@ -1,0 +1,8 @@
+/python_selfhost/pyvenv.cfg
+/python_selfhost/__pycache__
+/python_selfhost/Lib
+/python_selfhost/Scripts
+/nodejs_selfhost/node_modules
+/nodejs_selfhost/package.json
+/nodejs_selfhost/package-lock.json
+/nodejs_selfhost/.env

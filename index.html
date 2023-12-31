@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <title>Prompt Octopus | Side-by-side prompt engineering</title>
+    <meta name="title" content=">Prompt Octopus | Side-by-side prompt engineering">
+    <meta name="description" content="Compare as many prompt responses as you need!">
+    <!-- <meta property="og:url" content="https://doorstopped.org/"> -->
+    <!-- <meta property="og:image" content="https://doorstopped.org/og.jpg">
+    <meta name="twitter:image" content="https://doorstopped.org/og.jpg"> -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:title" content=">Prompt Octopus | Side-by-side prompt engineering">
+    <meta property="og:description" content="Compare as many prompt responses as you need!">
+    <meta property="twitter:card" content="summary_large_image">
+    <!-- <meta property="twitter:url" content="https://doorstopped.org/"> -->
+    <meta property="twitter:title" content=">Prompt Octopus | Side-by-side prompt engineering">
+    <meta property="twitter:description" content="Compare as many prompt responses as you need!">
+    <link href="/assets/favicon/apple-touch-icon.png" rel="apple-touch-icon">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico" type="image/x-icon">
+
+    <!-- include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- include jQuery UI -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/assets/css/styles.css">
+
+</head>
+
+<body class="body-octopus">
+
+    <div class="onboarding-overlay" id="onboarding" style="display: none;">
+        <!-- <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="this.parentElement.style.display = 'none';">x</button> -->
+        <h1>Welcome to Prompt Octopus 🐙🐙</h1>
+        <p>Add an OpenAI API key:</p>
+        <div class="input-container">
+                <input type="text" id="key" placeholder="API key here" spellcheck="false" autocapitalize="off">
+                <input id="key-form" type="submit" value="Submit">
+        </div>
+            <p class="subtitle" >Stored locally in cache - clear it anytime in settings.</p>
+        <p>Or self-host on <a href="https://github.com/benguz/prompt-octopus">Github</a>!</p>
+        
+    </div>
+    <button class="settings-toggle essay-button" id="settings-button" onclick="toggleSettings()"></button>
+    <div class="settings-overlay" id="settings" style="display: none">
+        <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="toggleSettings()">x</button>
+        <h2 style="text-align: center; margin-bottom: 5px;">Settings</h2>
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%;">
+            
+            <div class="vertical">
+                <button id="add-response" class="essay-button" onclick="addResponse()"><strong>Add Column</strong></button>
+                <p>Ctrl+B / ⌘+B</p>
+            </div>
+            <div class="vertical">
+                <button id="add-row" class="essay-button" onclick="addRow()"><strong>Add Row</strong></button>
+                <p>Ctrl+E / ⌘+E</p>
+            </div>
+            <div class="vertical">
+                <button id="show-history" class="essay-button" onclick="showHistory()"><strong>View History</strong></button>
+                <p>Ctrl+M / ⌘+M</p>
+
+            </div>
+        </div>
+        <p style="text-align: center; "><strong>Change Textbox Height</strong></p>
+        <div class="slider-wrapper noswipe" id="noswipe">
+            <input type="range" min="10" max="50" value="22" class="slider noswipe" id="myRange" step="2">
+            <div class="slider-labels">
+              <label class="slider-label-left"><strong>10%</strong></label>
+              <label class="slider-label-right"><strong>50%</strong></label>
+            </div>
+          </div>
+          <br>
+          <p style="text-align: center; margin-bottom: 2px;"><strong>Change Model Type</strong></p>
+          <p class="subtitle" style="text-align: center;" id="model-name">Current is gpt-4-1106-preview.</p>
+
+          <div  class="input-container">
+            <input type="text" id="model-input" placeholder="try gpt-3.5-turbo, gpt-4, or gpt-4-1106-preview" spellcheck="false" autocapitalize="off" autocomplete="false">
+            <input type="submit" id="model-form" value="Submit">
+                <button id="remove-key" class="essay-button"  onclick="removeKey()"><strong>Unsave API Key</strong></button>
+          </div>
+          <p class="subtitle" id="model-status" style="display: none">Changed successfully!</p>
+          <p class="subtitle" id="key-status" style="display: none">Unsaved successfully! Refresh to add a new key.</p>
+          <p>Try <a href="https://github.com/benguz/prompt-octopus">self-hosting on Github</a>!</p>
+
+    </div>
+    <div class="history-overlay" id="prompt-history" style="display: none">
+
+    </div>
+
+    <div id="prompt-box">
+        <div id="row-1" class="prompt-row">
+            <div class="response" id="response-1">
+                <button class="prompt-toggle essay-button" id="toggle-1"></button>
+                <p id="toggle-1-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Enter a prompt here...</p>
+                <p id="toggle-1-response" class="engineered-response" style="display: none">Response will appear here</p>
+            </div>
+            <div class="response" id="response-2">
+                <button class="prompt-toggle essay-button" id="toggle-2">
+                </button>
+                <p id="toggle-2-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Enter a prompt here...</p>
+                <p id="toggle-2-response" class="engineered-response" style="display: none">Response will appear here</p>
+            </div>
+            <div class="response" id="response-3">
+                <button class="prompt-toggle essay-button" id="toggle-3">
+                </button>
+                <p id="toggle-3-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Enter a prompt here...</p>
+                <p id="toggle-3-response" class="engineered-response" style="display: none">Response will appear here</p>
+            </div>
+        </div>
+        
+
+    </div>
+      <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
+        &#8203;Paste your query here...
+        <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button><div class="overlay" id="loading-overlay" style="display: none;"></div>
+      </div>
+      <p id="openAI-response" style="position: absolute; top: 50%; left: 50%;"></p>
+      <div class="lds-roller" id="openAI-loading" style="display: none;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <br><br>
+
+<script src="/assets/js/script.js"></script>
+
+</body>
+
+</html>
