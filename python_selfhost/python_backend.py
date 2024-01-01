@@ -20,7 +20,7 @@ def multiple_prompts():
     # Extract 'prompts' and 'inputChat' from the received data
     prompts = data.get('prompts', [])
     input_chat = data.get('input', '')
-    model_name= data.get('input', 'gpt-3.5-turbo')
+    model_name= data.get('model', 'gpt-3.5-turbo')
 
     # add typing during response https://platform.openai.com/docs/api-reference/streaming#chat/create-stream
     # add multiple models
@@ -28,7 +28,7 @@ def multiple_prompts():
     results = []
 
     for prompt in prompts:
-        completion = openai.ChatCompletion.create(
+        completion = openai.chat.completions.create(
             model=model_name,
             messages= [
                 {"role": "system", "content": prompt},

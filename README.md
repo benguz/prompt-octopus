@@ -5,11 +5,16 @@ Run side-by-side prompt engineering and compare as many prompt responses as you 
 You'll need an OpenAI API key.
 ### Python
 Move /assets into /python_selfhost/static
+```
+mv assets python_selfhost/static
+```
 
 Working in /python_selfhost, run Python (ex. with Windows):
 ```
+pip install virtualenv
 virtualenv .venv
 .venv\scripts\activate
+# source .venv/bin/activate for mac/unix
 ```
 
 Next:
@@ -19,8 +24,14 @@ set FLASK_APP=python_backend.py
 ```
 (use "export" instead of "set" on mac)
 
+create a .env file in /python_selfhost and add:
 ```
-flask run
+OPENAI_API_KEY='your-api-key-here'
+```
+
+You're ready to go! Run: 
+```
+python -m flask run
 ```
 
 ### Node.js
@@ -37,6 +48,9 @@ OPENAI_API_KEY=your_api_key_here
 
 Move the index.html file from /nodejs_selfhost into your assets folder, then move the folder into /nodejs_selfhost 
 ```
+mv index.html assets
+mv assets nodejs_selfhost
+
 node node_script.js
 ```
 
