@@ -1,6 +1,7 @@
 /python_selfhost/pyvenv.cfg
 /python_selfhost/__pycache__
 /python_selfhost/Lib
+/python_selfhost/.env
 /python_selfhost/Scripts
 /nodejs_selfhost/node_modules
 /nodejs_selfhost/package.json

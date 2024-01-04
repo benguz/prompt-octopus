@@ -33,13 +33,14 @@
 <link rel="stylesheet" href="/static/assets/css/styles.css">
 </head>
 
-<body class="body-octopus">
+<body class="body-octopus" id="document-body">
     <div id="SELFHOST" style="display: none"></div>    <!-- DO NOT REMOVE -->
 
     <div class="onboarding-overlay" id="onboarding" style="display: none;">
         <h1>Welcome to Prompt Octopus 🐙🐙</h1>
         <p>Add your API key in a .env file and choose a model here:</p>
-        <div class="input-container">
+        <div class="input-container" autocomplete="off">
+            <input autocomplete="false" name="hidden" type="text" style="display:none;">
             <input type="text" id="model-input-onboard" placeholder="try gpt-3.5-turbo, gpt-4, or gpt-4-1106-preview" spellcheck="false" autocapitalize="off">
             <input type="submit" id="model-form-onboard" value="Submit">
             </div>
@@ -114,11 +115,15 @@
         
 
     </div>
-      <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
-        &#8203;Paste your message here...
-        <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button><div class="overlay" id="loading-overlay" style="display: none;"></div>
+    <div id="openAI-response" style="display: none;">
+        <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="this.parentElement.style.display = 'none';">x</button>
+        <strong>Error 🐙🐙</strong><p id="error-content"></p>
       </div>
-      <p id="openAI-response" style="position: absolute; top: 50%; left: 50%;"></p>
+    <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button>
+      <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
+        &#8203;Write your message here...
+        <div class="overlay" id="loading-overlay" style="display: none;"></div>
+      </div>
       <div class="lds-roller" id="openAI-loading" style="display: none;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <br><br>
 

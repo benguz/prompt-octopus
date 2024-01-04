@@ -45,9 +45,10 @@
     display: inline-block;
     background-color: rgb(211, 214, 238);
     position: absolute;
-    right: 10px;
-    top: 5px;
+    right: 13.5%;
+    bottom: 13.5%;
     box-shadow: none;
+    z-index: 3;
   }
   .essay {
     max-width: 90%;
@@ -359,11 +360,62 @@
 }
 .settings-toggle {
     background-image: url("../favicon/favicon-32x32.png");
+    /* background-image: url("../settings.png"); */
     top: 0;
     z-index: 3;
     max-width: 40px;
     right: 0.5em;
+    transition: width 1.5s
 }
+.settings-toggle.expand, .prompt-toggle.expand {
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: none;
+}
+.info {
+  border-radius: 10px 0px 0px 10px;
+  right: 3em;
+  top: 0em;
+  height: 36px;
+  padding: 8px;
+  background-image: none;
+  -webkit-clip-path: inset(-5px 0px -5px -5px);
+    clip-path: inset(-5px 0px -5px -5px);
+  transform: translateX(50px);
+  transition: opacity 0.5s, transform 0.5s;
+  box-shadow: none;
+} 
+.info.extra {
+  z-index: 4;
+  max-width: none;
+}
+.hide-scroll {
+  overflowY: hidden;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+#openAI-response {
+  z-index: 5;
+  position: absolute;
+  width: 50%;
+  margin: auto;
+  background: white;
+  padding: 2em;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes colorChange {
+  0%, 100% { background-color: #f5f5f5; }
+  50% { background-color: rgba(211, 214, 238, 0.6); }
+}
+.animate-background {
+  animation: colorChange 3s infinite;
+}
+
 #row-1 .response:last-child .prompt-toggle  {
   right: 4em
 }

@@ -1,17 +1,18 @@
 var isSelfHosting = document.getElementById('SELFHOST');
 let essaySubmission = document.getElementById('essay-submission');
-let additionalContent = '<button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button><div class="overlay" id="loading-overlay" style="display: none;"></div>'
+let additionalContent = '<div class="overlay" id="loading-overlay" style="display: none;"></div>'
 
 // ensure textbox can always be clicked
-essaySubmission.addEventListener('input', function() {
+essaySubmission.addEventListener('input', function(event) {
     // Check if the innerHTML only contains the button
     if (this.innerHTML.trim() === additionalContent) {
         this.innerHTML = '&#8203;' + this.innerHTML; // Adds a zero-width space at the beginning
     } 
+    
 });
 
 // remove placeholder text on focus
-const placeholderText = "\u200B" + "Paste your message here..."; 
+const placeholderText = "\u200B" + "Write your message here..."; 
 
 essaySubmission.addEventListener("focus", function () {
     let clone = essaySubmission.cloneNode(true);
@@ -28,6 +29,16 @@ essaySubmission.addEventListener("focus", function () {
     } 
 });
 
+// Reload with last used prompts in place
+let promptHist = localStorage.getItem("usageHistory");
+        if (promptHist) {
+            promptArr = JSON.parse(promptHist);
+            for (let i = 0; i < 3; i++) {
+                if (promptArr[i][0]) {
+                    document.getElementById(`toggle-${3 - i}-prompt`).textContent = "\u200B" + promptArr[i][0];
+                }
+            }
+        }
 
 // Settings menu
 function toggleSettings() {
@@ -66,6 +77,7 @@ if (!OPENAI_KEY && !isSelfHosting) {
         OPENAI_KEY = keyInput.value; 
         localStorage.setItem('OPENAI_KEY', OPENAI_KEY);
         document.getElementById("onboarding").style.display = "none";
+        settingsHint();
     });
 }
 if (!MODEL_NAME && !isSelfHosting) {
@@ -85,10 +97,37 @@ if (isSelfHosting) {
             localStorage.setItem('MODEL_NAME', MODEL_NAME);
             document.getElementById("model-name").textContent = `Current model is ${MODEL_NAME}`;
             document.getElementById("onboarding").style.display = "none";
+            settingsHint()
     });
     }
-    
 } 
+
+function settingsHint() {
+    document.getElementById("settings-button").classList.add("expand");
+
+    info = document.createElement("button");
+    info.classList.add("settings-toggle", "essay-button", "info", "extra");
+    info.textContent = "Change settings";
+    document.getElementById("document-body").classList.add("hide-scroll");
+    document.getElementById("document-body").prepend(info);
+    info.addEventListener("click", toggleSettings);
+    setTimeout(() => {
+        info.style.opacity = '1';
+        info.style.transform = 'translateX(0)';
+    }, 100);
+    setTimeout(() => {
+        document.getElementById("settings-button").classList.remove("expand");
+        info.style.transition = "opacity 1s, transform 1s;"
+
+        info.style.opacity = '0';
+        info.style.transform = 'translateX(50%)';
+    }, 3000)
+    setTimeout(() => {
+        info.remove();
+        document.getElementById("document-body").classList.remove("hide-scroll");
+
+    }, 4000)
+}
 
 modelForm.addEventListener('click', function(event) {
     MODEL_NAME = modelInput.value; 
@@ -193,8 +232,8 @@ function renumber() {
     
 }
 
-
 // Hotkeys
+let pastMessage = -1;
 document.addEventListener('keydown', function(event) {
     // Check if 'B' is pressed along with 'Ctrl' or 'Command'
     if (event.key === 'b' || event.key === 'B') {
@@ -221,8 +260,32 @@ document.addEventListener('keydown', function(event) {
             // Call your function here
             showHistory();
         }
+    } else if (event.key === "ArrowUp" && document.activeElement === essaySubmission) {
+        // scroll through past messages with arrow keys
+        lastQuery = previousQuery(1);
+        if (lastQuery) {
+            essaySubmission.innerHTML = '&#8203;' + lastQuery;
+        }
+    } else if (event.key === 'ArrowDown' && pastMessage != -1 && pastMessage != 0 && document.activeElement === essaySubmission) {
+        lastQuery = previousQuery(-1);
+        if (lastQuery) {
+            essaySubmission.innerHTML = '&#8203;' + lastQuery;
+        }
     }
 });
+
+function previousQuery(bool) {
+    let queryHist = localStorage.getItem("usageHistory");
+    if (queryHist) {
+        let queryArr = JSON.parse(queryHist);
+        pastMessage = pastMessage + bool;
+        let showMessage = pastMessage * numPrompts;
+        if (showMessage < queryArr.length) {    
+            return queryArr[showMessage][2];     
+        }
+    } 
+    return "";
+}
 
 function addResponse() {
     for (let i = 1; i <= numRows; i++) {
@@ -286,10 +349,13 @@ engineeredPrompts.forEach(engineeredPrompt => {
     });
 });
 
+errorMessage = document.getElementById("openAI-response");
+errorContent = document.getElementById("error-content");
 // main function - handles prompts
 function submitMultiplePrompts() {
     if (!OPENAI_KEY && !isSelfHosting) {
-        document.getElementById("openAI-response").innerHTML = "You haven't added an API key - you can still do it in settings!";
+        errorMessage.style.display = "block";
+        errorContent.innerHTML =  "You haven't added an API key - you can still do it in settings!";
         return;
     }
     let inputChat = document.getElementById("essay-submission").textContent;
@@ -297,7 +363,7 @@ function submitMultiplePrompts() {
     if (submitIndex !== -1 && submitIndex === inputChat.length - "Submit".length) {
         inputChat = inputChat.slice(0, submitIndex);
     }
-    if (inputChat) {
+    if (inputChat && inputChat != "\u200B") {
         document.getElementById("openAI-loading").style.display = "inline-block";
         var overlay = document.createElement('div');
         overlay.className = 'overlay';
@@ -342,8 +408,33 @@ function submitMultiplePrompts() {
                     usageArray.unshift(promptsAndResponses[j]);
                 }
                 localStorage.setItem("usageHistory", JSON.stringify(usageArray));
+                
             } else {
                 localStorage.setItem("usageHistory", JSON.stringify(promptsAndResponses));
+                // onboard toggle back and forth
+                document.getElementById("toggle-1").classList.add("expand");
+
+                info = document.createElement("button");
+                info.id = "toggle-1";
+                info.classList.add("prompt-toggle", "essay-button", "info");
+                info.textContent = "flip back to prompt"
+                document.getElementById("response-1").appendChild(info);
+
+                toggleResponse(info);
+                setTimeout(() => {
+                    info.style.opacity = '1';
+                    info.style.transform = 'translateX(0)';
+                }, 2000);
+                setTimeout(() => {
+                    document.getElementById("toggle-1").classList.remove("expand");
+                    info.style.transition = "opacity 1s, transform 1s;"
+
+                    info.style.opacity = '0';
+                    info.style.transform = 'translateX(50%)';
+                }, 5000)
+                setTimeout(() => {
+                    info.remove();
+                }, 6000)
             }
             
             for (let i = 1; i <= numPrompts; i++) {
@@ -356,10 +447,74 @@ function submitMultiplePrompts() {
             console.error("Error:", error);
             document.getElementById("openAI-loading").style.display = "none";
             overlay.remove();
-            document.getElementById("openAI-response").innerHTML = "Ran into an error, sorry! Try again with a shorter prompt or email <a href='mailto:ben@fix.school?subject=ChatGPT Free Membership' style='display: inline-block'>ben@fix.school</a> with a message about your error.";
+            errorContent.innerHTML = "Ran into an error, sorry! Try again with a shorter prompt or email <a href='mailto:ben@fix.school?subject=ChatGPT Free Membership' style='display: inline-block'>ben@fix.school</a> with a message about your error.";
+            errorMessage.style.display = "block";
+
         }); 
     } else {
-        document.getElementById("openAI-response").innerHTML = "Add text below, then hit submit!";
+        errorContent.innerHTML = "Add text below, then hit submit!";
+        errorMessage.style.display = "block";
 
     }
+}
+
+// difference check
+function pickTwo () {
+    let picked = [];
+    function allowPicking(e) {
+        e.preventDefault();
+        e.currentTarget.classList.remove('animate-background');
+        e.currentTarget.style.backgroundColor = "rgb(211, 214, 238)";
+        picked.push(e.currentTarget.querySelector('.engineered-response'));
+
+        if (picked.length === 2) {
+            diffCheck(picked[0], picked[1]);
+            Array.from(document.querySelectorAll('[id^="response-"]')).forEach(child => {
+                child.removeEventListener("click", allowPicking);
+                child.classList.remove('animate-background');
+            });
+
+            return;
+        }
+    } 
+
+    Array.from(document.querySelectorAll('[id^="response-"]')).forEach(child => {
+        let randomDelay = Math.random() * 500; // Random delay up to 500ms
+        child.style.animationDelay = `${randomDelay}ms`;
+        child.classList.add('animate-background');
+        child.addEventListener("click", allowPicking); 
+    });
+
+}
+function diffCheck(response1, response2) {
+    const data = {
+        text1: response1.textContent,
+        text2: response2.textContent
+    };
+    // Make a POST request
+    let fetchLink = "https://ai.fix.school/difference";
+    if (isSelfHosting) {
+        fetchLink = "/difference";
+    }
+    console.log(fetchLink)
+
+    fetch(fetchLink, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(response1.innerHTML + " " + response2.innerHTML)
+        response1.innerHTML = data.text1;
+        response2.innerHTML = data.text2;
+
+        response1.parentElement.style.backgroundColor = " #f5f5f5";
+        response2.parentElement.style.backgroundColor = " #f5f5f5";
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }

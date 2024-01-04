@@ -35,8 +35,7 @@
 <script defer data-domain="promptoctopus.com" src="https://plausible.io/js/script.js"></script>
 </head>
 
-<body class="body-octopus">
-
+<body class="body-octopus" id="document-body">
     <div class="onboarding-overlay" id="onboarding" style="display: none;">
         <!-- <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="this.parentElement.style.display = 'none';">x</button> -->
         <h1>Welcome to Prompt Octopus 🐙🐙</h1>
@@ -47,10 +46,11 @@
                 <input id="key-form" type="submit" value="Submit">
         </div>
             <p class="subtitle" >Stored locally in cache - clear it anytime in settings.</p>
-        <p>Or self-host on <a href="https://github.com/benguz/prompt-octopus">Github</a>!</p>
+        <p>Change model type and number of prompts by clicking the Octopus icon, or self-host on <a href="https://github.com/benguz/prompt-octopus">Github</a>!</p>
         
     </div>
-    <button class="settings-toggle essay-button" id="settings-button" onclick="toggleSettings()"></button>
+    <button class="settings-toggle essay-button" id="settings-button" onclick="toggleSettings()">
+    </button>
     <div class="settings-overlay" id="settings" style="display: none">
         <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="toggleSettings()">x</button>
         <h2 style="text-align: center; margin-bottom: 5px;">Settings</h2>
@@ -119,11 +119,16 @@
         
 
     </div>
-      <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
-        &#8203;Paste your message here...
-        <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button><div class="overlay" id="loading-overlay" style="display: none;"></div>
+    <div id="openAI-response" style="display: none;">
+        <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="this.parentElement.style.display = 'none';">x</button>
+        <strong>Error 🐙🐙</strong><p id="error-content"></p>
       </div>
-      <p id="openAI-response" style="position: absolute; top: 50%; left: 50%;"></p>
+    <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button>
+      <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
+        &#8203;Write your message here...
+        <div class="overlay" id="loading-overlay" style="display: none;"></div>
+      </div>
+      
       <div class="lds-roller" id="openAI-loading" style="display: none;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
       <br><br>
 

@@ -12,7 +12,7 @@ mv assets python_selfhost/static
 Working in /python_selfhost, run Python (ex. with Windows):
 ```
 pip install virtualenv
-virtualenv .venv
+virtualenv .venv # or python -m venv .venv
 .venv\scripts\activate
 # source .venv/bin/activate for mac/unix
 ```
@@ -20,7 +20,7 @@ virtualenv .venv
 Next:
 ```
 pip install -r requirements.txt
-set FLASK_APP=python_backend.py
+set FLASK_APP=app.py
 ```
 (use "export" instead of "set" on mac)
 
