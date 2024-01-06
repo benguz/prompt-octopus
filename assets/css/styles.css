@@ -45,7 +45,7 @@
     display: inline-block;
     background-color: rgb(211, 214, 238);
     position: absolute;
-    right: 13.5%;
+    right: calc(15% - 3em);
     bottom: 13.5%;
     box-shadow: none;
     z-index: 3;
@@ -329,11 +329,12 @@
 .prompt-entry {
     position: absolute;
     bottom: 0;
-    width: 70%;
+    width: calc(70%);
     height: calc(23vh - 4em);
     margin: auto;
     background-color: white;
     padding: 2em;
+    padding-right: 4em;
     border-radius: 5px;
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -357,7 +358,22 @@
     background-repeat: no-repeat;
     background-size: 55%;
     padding: 18px 18px;
+    z-index: 3;
+    top: 0;
 }
+.prompt-toggle.covered {
+  background-color: transparent;
+  background-image: url("../regroup_transparent.png");
+}
+
+.prompt-toggle.covered:hover {
+  background-image: url("../regroup.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 55%;
+}
+
 .settings-toggle {
     background-image: url("../favicon/favicon-32x32.png");
     /* background-image: url("../settings.png"); */
@@ -416,12 +432,10 @@
   animation: colorChange 3s infinite;
 }
 
-#row-1 .response:last-child .prompt-toggle  {
-  right: 4em
-}
 .engineered-prompt, .engineered-response {
     overflow-y: auto;
     padding: 1em;
+    /*     padding: 2em 2em 1em 1em; */
     height: calc(100% - 2em);
     max-height: 100%;
 }
@@ -429,9 +443,16 @@
     margin: 0;
 }
 .engineered-response {
-    padding: 1em;
     margin: 0;
 }
+
+#row-1 .response:last-child .prompt-toggle  {
+  right: 4em
+}
+#row-1 .response:last-child .engineered-prompt, #row-1 .response:last-child .engineered-response {
+  padding-right: 2.5em
+}
+
 
 #prompt-box {
     display: flex; 

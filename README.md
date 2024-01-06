@@ -54,4 +54,5 @@ mv assets nodejs_selfhost
 node node_script.js
 ```
 
-
+## As seen on...
+<a href="https://theresanaiforthat.com/ai/prompt-octopus/?ref=featured&v=777588" target="_blank"><img width="300" src="https://media.theresanaiforthat.com/featured3.png"></a>

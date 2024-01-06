@@ -198,6 +198,10 @@ function addRow() {
                 if (child.textContent === promptPlaceholderText) {
                     child.innerHTML = "\u200B";
                 } 
+                child.parentElement.querySelector('.prompt-toggle').classList.add('covered');
+            });
+            child.addEventListener("focusout", function() {
+                child.parentElement.querySelector('.prompt-toggle').classList.remove('covered')
             });
         }
     });
@@ -301,6 +305,10 @@ function addResponse() {
                     if (child.textContent === promptPlaceholderText) {
                         child.innerHTML = "\u200B";
                     } 
+                    child.parentElement.querySelector('.prompt-toggle').classList.add('covered');
+                });
+                child.addEventListener("focusout", function() {
+                    child.parentElement.querySelector('.prompt-toggle').classList.remove('covered')
                 });
             }
         });
@@ -346,6 +354,10 @@ engineeredPrompts.forEach(engineeredPrompt => {
         if (engineeredPrompt.textContent === promptPlaceholderText) {
             engineeredPrompt.innerHTML = "\u200B";
         } 
+        engineeredPrompt.parentElement.querySelector('.prompt-toggle').classList.add('covered');
+    });
+    engineeredPrompt.addEventListener("focusout", function() {
+        engineeredPrompt.parentElement.querySelector('.prompt-toggle').classList.remove('covered')
     });
 });
 

@@ -2,12 +2,13 @@
 - clean up history UX, add buttons to copy/paste
 - add option to switch to chat interface
 - add model name to history
+- solve overlap issues in top right corner (solved on prompts, unsolved on response)
 - add stop sequences
 - add vector similarity to diff check
 - prevent chrome from auto-suggesting your API key
 - resize each box horizontally
 - clarify prompt vs. response UI
-- parallelize running multiple prompts simultaneously
+- parallelize running multiple prompts simultaneously (done for python, still to-do for node)
 - functions to remove row/col 
 - larger/narrower textbox on larger screens
 - privacy policy and terms

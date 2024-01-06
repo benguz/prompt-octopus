@@ -4,3 +4,4 @@ openai==1.6.1
 python-dotenv==1.0.0
 flask_cors==4.0.0
 virtualenv==20.25.0
+aiohttp==3.9.1
