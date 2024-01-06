@@ -2,6 +2,7 @@
 - clean up history UX, add buttons to copy/paste
 - add option to switch to chat interface
 - add model name to history
+- file upload
 - solve overlap issues in top right corner (solved on prompts, unsolved on response)
 - add stop sequences
 - add vector similarity to diff check

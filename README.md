@@ -1,6 +1,10 @@
 # Prompt Octopus 🐙
 Run side-by-side prompt engineering and compare as many prompt responses as you need! Try it online at [https://promptoctopus.com](https://promptoctopus.com) or self-host.
 
+You'll start off with three "system prompts" you can customize: try filling them with different instructions that test the user. Then add content to the "message" box at the bottom: this is where you'd add the content the user might input. If you're building an Essay Grading AI, you might try three different grading instructions, and submit an essay in the message box.
+
+Hit "Submit" and compare your responses side by side, then try again with more prompts or another message!
+
 ## Self-Hosting
 You'll need an OpenAI API key.
 ### Python
