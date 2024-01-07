@@ -297,6 +297,7 @@
 .input-container {
     display: flex;
     align-items: center;
+    max-width: 100%;
 }
 
 .input-container input[type="text"] {
@@ -514,7 +515,8 @@ p.subtitle {
 
 @media screen and (max-width: 720px) {
     .prompt-entry {
-        width: calc(100% - 4em);
+        width: calc(100% - 5em);
+        max-width: 100%;
     }
     .response {
         width: 100%;
@@ -523,6 +525,6 @@ p.subtitle {
         flex-direction: column;
     }
     .prompt-row {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 }

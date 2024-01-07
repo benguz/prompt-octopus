@@ -1,5 +1,6 @@
 # To-Do
 - clean up history UX, add buttons to copy/paste
+- add learning resources
 - add option to switch to chat interface
 - add model name to history
 - file upload

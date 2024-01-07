@@ -7,13 +7,14 @@ essaySubmission.addEventListener('input', function(event) {
     // Check if the innerHTML only contains the button
     if (this.innerHTML.trim() === additionalContent) {
         this.innerHTML = '&#8203;' + this.innerHTML; // Adds a zero-width space at the beginning
+        essaySubmission.style.color = "black";
     } 
     
 });
 
 // remove placeholder text on focus
 const placeholderText = "\u200B" + "Write your message here..."; 
-
+const onboardingPlaceholder = "\u200B" + "Write your message here... try \"What should my new years resolution be as an aspiring prompt engineer?\""
 essaySubmission.addEventListener("focus", function () {
     let clone = essaySubmission.cloneNode(true);
 
@@ -24,8 +25,9 @@ essaySubmission.addEventListener("focus", function () {
         }
     });
     let textContent = clone.textContent.trim();
-    if (textContent === placeholderText) {
+    if (textContent === placeholderText || textContent === onboardingPlaceholder) {
         essaySubmission.innerHTML = "\u200B" + additionalContent;
+        essaySubmission.style.color = "black";
     } 
 });
 
@@ -71,6 +73,13 @@ var modelInput = document.getElementById('model-input');
 var OPENAI_KEY = localStorage.getItem('OPENAI_KEY');
 var MODEL_NAME = localStorage.getItem('MODEL_NAME');
 
+
+// the onboarding case
+if (!OPENAI_KEY && !MODEL_NAME) {
+    essaySubmission.style.color = "rgb(96 96 96)";
+    document.querySelectorAll('.prompt-toggle').forEach(toggle => {toggle.classList.add('covered')});
+}
+
 if (!OPENAI_KEY && !isSelfHosting) {
     document.getElementById("onboarding").style.display = "block";
     keyForm.addEventListener('click', function(event) {
@@ -81,10 +90,13 @@ if (!OPENAI_KEY && !isSelfHosting) {
     });
 }
 if (!MODEL_NAME && !isSelfHosting) {
+    MODEL_NAME = "gpt-3.5-turbo";
+    localStorage.setItem('MODEL_NAME', "gpt-3.5-turbo");
+} else if (!MODEL_NAME && isSelfHosting) {
     MODEL_NAME = "gpt-4-1106-preview";
     localStorage.setItem('MODEL_NAME', "gpt-4-1106-preview");
-
 }
+
 
 if (isSelfHosting) {
     document.getElementById("remove-key").style.display = "none";
@@ -195,7 +207,7 @@ function addRow() {
             toggleResponse(child);
         } else if (child.classList.contains('engineered-prompt')) {
             child.addEventListener("focus", function() {
-                if (child.textContent === promptPlaceholderText) {
+                if (promptPlaceholderTexts.includes(child.textContent)) {
                     child.innerHTML = "\u200B";
                 } 
                 child.parentElement.querySelector('.prompt-toggle').classList.add('covered');
@@ -302,7 +314,7 @@ function addResponse() {
                 toggleResponse(child);
             } else if (child.id===`toggle-${numPrompts + 1}-prompt`) {
                 child.addEventListener("focus", function() {
-                    if (child.textContent === promptPlaceholderText) {
+                    if (promptPlaceholderTexts.includes(child.textContent)) {
                         child.innerHTML = "\u200B";
                     } 
                     child.parentElement.querySelector('.prompt-toggle').classList.add('covered');
@@ -348,10 +360,19 @@ toggles.forEach(toggle => {
 
 // removes placeholder text on focus
 const engineeredPrompts = document.querySelectorAll('.engineered-prompt');
-let promptPlaceholderText = "\u200B" + "Enter a prompt here...";
+let promptPlaceholderTexts = [
+    "\u200B" + "Write a prompt here...",
+    "\u200B" + "Write another prompt here...",
+    "\u200B" + "Write a prompt here, like \"Act as an experienced therapist\"",
+    "\u200B" + "Write a prompt here, try \"Answer with specific details\"",
+    "\u200B" + "Write a prompt here, try \"Answer like my mom\"",
+    "\u200B" + "Write another prompt here, like \"Answer like an octopus wizard\"",
+    "\u200B" + "Write a prompt here, try \"Answer with specific details\"",
+    "\u200B" + "Write a prompt here, try \"Answer like my mom\""
+]
 engineeredPrompts.forEach(engineeredPrompt => {
     engineeredPrompt.addEventListener("focus", function() {
-        if (engineeredPrompt.textContent === promptPlaceholderText) {
+        if (promptPlaceholderTexts.includes(engineeredPrompt.textContent)) {
             engineeredPrompt.innerHTML = "\u200B";
         } 
         engineeredPrompt.parentElement.querySelector('.prompt-toggle').classList.add('covered');
