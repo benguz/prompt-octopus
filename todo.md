@@ -14,7 +14,6 @@
 - parallelize running multiple prompts simultaneously (done for python, still to-do for node)
 - functions to remove row/col 
 - larger/narrower textbox on larger screens
-- privacy policy and terms
 - add more LLMs
 - multi-cursor typing
 - model form validation

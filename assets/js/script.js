@@ -380,7 +380,7 @@ let promptPlaceholderTexts = [
     "\u200B" + "Write a prompt here, like \"Act as an experienced therapist\"",
     "\u200B" + "Write a prompt here, try \"Answer with specific details\"",
     "\u200B" + "Write a prompt here, try \"Answer like my mom\"",
-    "\u200B" + "Write another prompt here, like \"Answer like an octopus wizard\"",
+    "\u200B" + "Write a similar one here, like \"Give advice like the Dalai Lama\"",
     "\u200B" + "Write a prompt here, try \"Answer with specific details\"",
     "\u200B" + "Write a prompt here, try \"Answer like my mom\""
 ]
@@ -464,9 +464,9 @@ function submitMultiplePrompts() {
                 info = document.createElement("button");
                 info.id = "toggle-1";
                 info.classList.add("prompt-toggle", "essay-button", "info");
-                info.textContent = "flip back to prompt"
+                info.textContent = "flip back to prompt";
+                info.style.opacity = 0;
                 document.getElementById("response-1").appendChild(info);
-
                 toggleResponse(info);
                 setTimeout(() => {
                     info.style.opacity = '1';
