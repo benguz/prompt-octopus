@@ -3,6 +3,7 @@
 - add learning resources
 - add option to switch to chat interface
 - add model name to history
+- add demo video
 - file upload
 - solve overlap issues in top right corner (solved on prompts, unsolved on response)
 - add stop sequences

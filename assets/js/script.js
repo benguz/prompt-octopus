@@ -14,7 +14,8 @@ essaySubmission.addEventListener('input', function(event) {
 
 // remove placeholder text on focus
 const placeholderText = "\u200B" + "Write your message here..."; 
-const onboardingPlaceholder = "\u200B" + "Write your message here... try \"What should my new years resolution be as an aspiring prompt engineer?\""
+// const onboardingPlaceholder = "\u200B" + "Write your message here... try \"What should my new years resolution be as an aspiring prompt engineer?\""
+const onboardingPlaceholder = "\u200B" + "Write a message here... you'll get a response for each of your prompts"
 essaySubmission.addEventListener("focus", function () {
     let clone = essaySubmission.cloneNode(true);
 
@@ -77,7 +78,8 @@ var MODEL_NAME = localStorage.getItem('MODEL_NAME');
 // the onboarding case
 if (!OPENAI_KEY && !MODEL_NAME) {
     essaySubmission.style.color = "rgb(96 96 96)";
-    document.querySelectorAll('.prompt-toggle').forEach(toggle => {toggle.classList.add('covered')});
+    document.querySelectorAll('.prompt-toggle').forEach(toggle => {toggle.classList.add('covered'); toggle.style.display = "none"});
+    
 }
 
 if (!OPENAI_KEY && !isSelfHosting) {
@@ -86,6 +88,14 @@ if (!OPENAI_KEY && !isSelfHosting) {
         OPENAI_KEY = keyInput.value; 
         localStorage.setItem('OPENAI_KEY', OPENAI_KEY);
         document.getElementById("onboarding").style.display = "none";
+        let firstBox = "response-1";
+        if (window.screen.width < 720) {// if is mobile
+            firstBox = "response-3"
+        } 
+        document.getElementById(firstBox).classList.add('animate-background');
+        document.getElementById(firstBox).addEventListener('click', function(e) {
+            e.currentTarget.classList.remove('animate-background');
+        })
         settingsHint();
     });
 }
@@ -120,25 +130,27 @@ function settingsHint() {
     info = document.createElement("button");
     info.classList.add("settings-toggle", "essay-button", "info", "extra");
     info.textContent = "Change settings";
-    document.getElementById("document-body").classList.add("hide-scroll");
-    document.getElementById("document-body").prepend(info);
-    info.addEventListener("click", toggleSettings);
+    setTimeout(() => {
+        document.getElementById("document-body").classList.add("hide-scroll");
+        document.getElementById("document-body").prepend(info);
+        info.addEventListener("click", toggleSettings);
+    }, 8000);
     setTimeout(() => {
         info.style.opacity = '1';
         info.style.transform = 'translateX(0)';
-    }, 100);
+    }, 8100);
     setTimeout(() => {
         document.getElementById("settings-button").classList.remove("expand");
         info.style.transition = "opacity 1s, transform 1s;"
 
         info.style.opacity = '0';
         info.style.transform = 'translateX(50%)';
-    }, 3000)
+    }, 11000)
     setTimeout(() => {
         info.remove();
         document.getElementById("document-body").classList.remove("hide-scroll");
 
-    }, 4000)
+    }, 12000)
 }
 
 modelForm.addEventListener('click', function(event) {
@@ -363,6 +375,8 @@ const engineeredPrompts = document.querySelectorAll('.engineered-prompt');
 let promptPlaceholderTexts = [
     "\u200B" + "Write a prompt here...",
     "\u200B" + "Write another prompt here...",
+    "\u200B" + "Write another version of the same prompt here",
+    "\u200B" + "Write another version here...",
     "\u200B" + "Write a prompt here, like \"Act as an experienced therapist\"",
     "\u200B" + "Write a prompt here, try \"Answer with specific details\"",
     "\u200B" + "Write a prompt here, try \"Answer like my mom\"",
@@ -469,12 +483,14 @@ function submitMultiplePrompts() {
                     info.remove();
                 }, 6000)
             }
-            
+            // flip to responses
             for (let i = 1; i <= numPrompts; i++) {
                 document.getElementById(`toggle-${i}-response`).style.display = "block";
                 document.getElementById(`toggle-${i}-prompt`).style.display = "none";
             }
-                
+            // ensure toggle is shown - from initial onboarding
+            document.querySelectorAll('.prompt-toggle').forEach(toggle => {toggle.style.display = "inline-block"});
+    
         })
         .catch(error => {
             console.error("Error:", error);

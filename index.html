@@ -39,6 +39,7 @@
     <div class="onboarding-overlay" id="onboarding" style="display: none;">
         <!-- <button class="essay-button" style="position: absolute; top: 10px; right: 10px;" onclick="this.parentElement.style.display = 'none';">x</button> -->
         <h1>Welcome to Prompt Octopus 🐙🐙</h1>
+        <p class="subtitle" style="font-size: 13pt; margin-bottom: 0;">Compare as many prompts as you need, side by side. </p>
         <p>Add an OpenAI API key:</p>
         <div class="input-container" autocomplete="off">
                 <input autocomplete="false" name="hidden" type="text" style="display:none;">
@@ -106,13 +107,13 @@
             <div class="response" id="response-2">
                 <button class="prompt-toggle essay-button" id="toggle-2">
                 </button>
-                <p id="toggle-2-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Write another prompt here, like "Answer like an octopus wizard"</p>
+                <p id="toggle-2-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Write another version of the same prompt here</p>
                 <p id="toggle-2-response" class="engineered-response" style="display: none">Response will appear here</p>
             </div>
             <div class="response" id="response-3">
                 <button class="prompt-toggle essay-button" id="toggle-3">
                 </button>
-                <p id="toggle-3-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Write another prompt here...</p>
+                <p id="toggle-3-prompt" class="engineered-prompt" style="display: block" contenteditable="true">&#8203;Write another version here...</p>
                 <p id="toggle-3-response" class="engineered-response" style="display: none">Response will appear here</p>
             </div>
         </div>
@@ -125,7 +126,7 @@
       </div>
     <button id="submit-essay" class="essay-button" onclick="submitMultiplePrompts()" contenteditable="false"><strong>Submit</strong></button>
       <div class="prompt-entry" id="essay-submission" contenteditable="true" spellcheck="false">
-        &#8203;Write your message here... try "What should my new years resolution be as an aspiring prompt engineer?"
+        &#8203;Write a message here... you'll get a response for each of your prompts
         <div class="overlay" id="loading-overlay" style="display: none;"></div>
       </div>
       
