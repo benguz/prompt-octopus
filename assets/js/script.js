@@ -38,7 +38,7 @@ let promptHist = localStorage.getItem("usageHistory");
             promptArr = JSON.parse(promptHist);
             for (let i = 0; i < 3; i++) {
                 if (promptArr[i][0]) {
-                    document.getElementById(`toggle-${3 - i}-prompt`).textContent = "\u200B" + promptArr[i][0];
+                    document.getElementById(`toggle-${3 - i}-prompt`).innerText = "\u200B" + promptArr[i][0];
                 }
             }
         }
@@ -405,7 +405,7 @@ function submitMultiplePrompts() {
         errorContent.innerHTML =  "You haven't added an API key - you can still do it in settings!";
         return;
     }
-    let inputChat = document.getElementById("essay-submission").textContent;
+    let inputChat = document.getElementById("essay-submission").innerText;
     const submitIndex = inputChat.lastIndexOf("Submit");
     if (submitIndex !== -1 && submitIndex === inputChat.length - "Submit".length) {
         inputChat = inputChat.slice(0, submitIndex);
@@ -417,7 +417,7 @@ function submitMultiplePrompts() {
         document.getElementById("essay-submission").appendChild(overlay);
 
         const elements = document.querySelectorAll('.engineered-prompt');
-        let promptData = Array.from(elements).map(element => element.textContent);
+        let promptData = Array.from(elements).map(element => element.innerText);
 
         let fetchLink = "https://ai.fix.school/multiple_prompts";
         if (isSelfHosting) {
